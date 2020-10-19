@@ -2,8 +2,8 @@ import os
 
 from celery import Celery
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'bcrm.settings')
-app = Celery('bcrm')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'general.settings')
+app = Celery('general')
 
 app.config_from_object('django.conf:settings', namespace='CELERY')
 

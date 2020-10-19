@@ -1,26 +1,36 @@
 """
-Django settings for BootcampCRM project.
+Django base settings for BootcampCRM project.
 """
+import environ
 from datetime import timedelta
 from pathlib import Path
 
+env = environ.Env(
+    DEBUG=(bool, False)
+)
+environ.Env.read_env()
+
 BASE_DIR = Path(__file__).resolve().parent.parent
-SECRET_KEY = '#gt4y#_@=&j+vhsxzo(9c52v1jrz(bx7m-bp^l7!(8v$t8_b6p'
-DEBUG = True
+
+SECRET_KEY = env('SECRET_KEY')
 
 ALLOWED_HOSTS = []
 
-INSTALLED_APPS = [
-    'authentication',
-    'analytics',
-    'blog',
-    'courses',
-    'search',
-    'users',
+LOCAL_APPS = [
+    'apps.authentication.apps.AuthenticationConfig',
+    'apps.analytics.apps.AnalyticsConfig',
+    'apps.blog.apps.BlogConfig',
+    'apps.courses.apps.CoursesConfig',
+    'apps.search.apps.SearchConfig',
+    'apps.users.apps.UsersConfig',
+]
 
+THIRD_PARTY_APPS = [
     'django_extensions',
     'rest_framework',
+]
 
+DJANGO_APPS = [
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -28,6 +38,8 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
 ]
+
+INSTALLED_APPS = LOCAL_APPS + THIRD_PARTY_APPS + DJANGO_APPS
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -39,7 +51,7 @@ MIDDLEWARE = [
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
 ]
 
-ROOT_URLCONF = 'bcrm.urls'
+ROOT_URLCONF = 'general.urls'
 
 TEMPLATES = [
     {
@@ -57,14 +69,7 @@ TEMPLATES = [
     },
 ]
 
-WSGI_APPLICATION = 'bcrm.wsgi.application'
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
-    }
-}
+WSGI_APPLICATION = 'general.wsgi.application'
 
 AUTH_PASSWORD_VALIDATORS = [
     {
@@ -88,6 +93,13 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
+STATIC_ROOT = BASE_DIR / 'static' / 'django'
+STATICFILES_DIRS = (
+    BASE_DIR / 'static' / 'project',
+)
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = BASE_DIR / 'media'
 
 REST_FRAMEWORK = {
     # Permission

@@ -1,1 +1,0 @@
-celery -A bcrm worker -l INFO
