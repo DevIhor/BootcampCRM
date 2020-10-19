@@ -1,8 +1,9 @@
 """
 Django base settings for BootcampCRM project.
 """
-import environ
 from datetime import timedelta
+
+import environ
 from pathlib import Path
 
 env = environ.Env(
@@ -11,6 +12,7 @@ env = environ.Env(
 environ.Env.read_env()
 
 BASE_DIR = Path(__file__).resolve().parent.parent
+PROJECT_DIR = BASE_DIR.parent
 
 SECRET_KEY = env('SECRET_KEY')
 
@@ -93,9 +95,9 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATIC_ROOT = BASE_DIR / 'static' / 'django'
+STATIC_ROOT = PROJECT_DIR / 'compiled-static'
 STATICFILES_DIRS = (
-    BASE_DIR / 'static' / 'project',
+    PROJECT_DIR / 'static',
 )
 
 MEDIA_URL = '/media/'
