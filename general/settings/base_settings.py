@@ -22,6 +22,7 @@ LOCAL_APPS = [
     'apps.authentication.apps.AuthenticationConfig',
     'apps.analytics.apps.AnalyticsConfig',
     'apps.blog.apps.BlogConfig',
+    'apps.common.apps.CommonConfig',
     'apps.courses.apps.CoursesConfig',
     'apps.search.apps.SearchConfig',
     'apps.users.apps.UsersConfig',

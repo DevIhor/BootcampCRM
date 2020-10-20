@@ -6,7 +6,7 @@ The file contains important changes from version to version. Started from 20.10.
 
 ### Added
 
-* Slugged Mixin
+* Slugged Mixin, Ownable Mixin
 
 ### Changed
 
