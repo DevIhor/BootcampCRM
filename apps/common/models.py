@@ -50,7 +50,7 @@ class Ownable(models.Model):
     """
     Abstract model that provides ownership of an object for a user.
     """
-    user = models.ForeignKey(to=User, verbose_name="Creator")
+    user = models.ForeignKey(to=User, verbose_name="Creator", on_delete=models.SET_NULL, null=True)
 
     class Meta:
         abstract = True

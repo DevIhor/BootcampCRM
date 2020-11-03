@@ -38,5 +38,5 @@ env.bak/
 venv.bak/
 
 .idea
-compiled-static/
+collectstatic/
 media/

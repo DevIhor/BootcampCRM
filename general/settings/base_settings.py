@@ -96,7 +96,7 @@ USE_L10N = True
 USE_TZ = True
 
 STATIC_URL = '/static/'
-STATIC_ROOT = PROJECT_DIR / 'compiled-static'
+STATIC_ROOT = PROJECT_DIR / 'collectstatic'
 STATICFILES_DIRS = (
     PROJECT_DIR / 'static',
 )

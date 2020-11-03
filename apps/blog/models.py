@@ -1,3 +1,5 @@
+import inspect
+
 from django.db import models
 
 from apps.common.models import Slugged, Ownable
@@ -8,7 +10,7 @@ class NewsTag(models.Model):
 
     class Meta:
         app_label = 'blog'
-        db_table = 'blog__news_tags'
+        db_table = 'blog_newstags'
         verbose_name = 'NewsTag'
         verbose_name_plural = 'NewsTags'
 
@@ -16,9 +18,9 @@ class NewsTag(models.Model):
 class News(Slugged, Ownable):
     title = models.CharField(max_length=255)
     is_published = models.BooleanField(default=False)
-    author = models.CharField(max_length=255)
+    author = models.CharField(max_length=255, null=True)
     tags = models.ManyToManyField(to=NewsTag, blank=True, related_name='news')
-    content = models.TextField()
+    content = models.TextField(default='')
 
     def autofill_author(self):
         if not self.author:
@@ -30,6 +32,6 @@ class News(Slugged, Ownable):
 
     class Meta:
         app_label = 'blog'
-        db_table = 'blog__news'
+        db_table = 'blog_news'
         verbose_name = 'News'
         verbose_name_plural = 'News'
