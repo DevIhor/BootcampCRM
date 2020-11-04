@@ -7,12 +7,7 @@ from django.contrib.auth import get_user_model
 from django.core.management.base import BaseCommand
 from django.db import DEFAULT_DB_ALIAS
 
-
-class NotRunningInTTYException(Exception):
-    pass
-
-
-PASSWORD_FIELD = 'password'
+from general.exceptions import NotRunningInTTYException
 
 
 class Command(BaseCommand):

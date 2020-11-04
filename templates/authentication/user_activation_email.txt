@@ -1,0 +1,13 @@
+{% load i18n %}
+{% block main %}
+    {% trans "Thank you for joining Bootcamp CRM!" %}
+    {% trans "Your E-mail address : {{ email }}" %}
+    {% trans "Click " %}
+    {{ url }}
+    {% trans "to confirm your account" %}
+    {% trans "Click on the confirmation link above to complete your registration for the BootcampCRM website." %}
+    {% trans "If you have any problems, contact us on " %}
+    {{ contact }}
+    {% trans "Many thanks," %}
+    {% trans "The Bootcamp CRM Team" %}
+{% endblock main %}

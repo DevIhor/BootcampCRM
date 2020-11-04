@@ -3,13 +3,14 @@ import logging
 from django.conf import settings
 from django.contrib.auth.models import User
 from django.utils import timezone
-from django.utils.encoding import force_text
-from django.utils.http import urlsafe_base64_decode
+from django.utils.encoding import force_text, force_bytes
+from django.utils.http import urlsafe_base64_decode, urlsafe_base64_encode
 from rest_framework import serializers
 from rest_framework.serializers import ModelSerializer
 from rest_framework_simplejwt.serializers import TokenObtainPairSerializer
 
-from apps.authentication.utils import TokenGenerator
+from apps.authentication.utils import TokenGenerator, create_token_url
+from apps.authentication.tasks import send_email
 
 logger = logging.getLogger("main")
 
@@ -33,14 +34,14 @@ class SignUpSerializer(ModelSerializer):
     """
     Create new user when doing sign up
     """
-    password_repeated = serializers.CharField(write_only=True)
     password = serializers.CharField(write_only=True)
+    password_repeated = serializers.CharField(write_only=True)
     url = serializers.RegexField(regex=r'[a-zA-Z0-9_\-\/]+', required=True, write_only=True)
 
     class Meta:
         model = User
-        fields = ("id", "email", "first_name", "last_name", "password", "password_repeated", "role", "url")
-        read_only_fields = ("id", "role")
+        fields = ("id", "email", "password", "password_repeated", "url")
+        read_only_fields = ("id", )
         write_only_fields = ("password", "password_repeated", "url")
 
     def validate(self, data):
@@ -57,25 +58,14 @@ class SignUpSerializer(ModelSerializer):
 
     def create(self, validated_data, is_dealer=False):
         validated_data.pop('password_repeated')
-        user = User(
-            email=validated_data['email'],
-            first_name=validated_data['first_name'],
-            last_name=validated_data['last_name']
-        )
-        if validated_data.get('role'):
-            user.role = validated_data['role']
+        user = User(email=validated_data['email'])
         user.set_password(validated_data['password'])
         user.save()
 
         token = f"{urlsafe_base64_encode(force_bytes(user.email))}.{TokenGenerator.make_token(user)}"
+        template = 'authentication/user_activation_email.html'
 
-        if is_dealer:
-            template = 'notifications/activation_email_dealer.html'
-        else:
-            template = 'notifications/activation_email.html'
-
-        url = validated_data.pop('url', '')
-        url = create_url(url, token)
+        url = create_token_url(validated_data.pop('url', ''), token)
         send_email.delay(
             subject="Welcome to Bootcamp CRM",
             template=template,
@@ -85,7 +75,6 @@ class SignUpSerializer(ModelSerializer):
                 'email': user.email,
                 'contact': settings.BCRM_INFO_PHONE
             })
-
         return user
 
 
@@ -118,5 +107,4 @@ class ActivationTokenSerializer(serializers.Serializer):
     def activate_user(self):
         user = User.objects.get(email=self.validated_data['email'])
         user.is_active = True
-        user.confirmation = ConfirmationChoices.CONFIRMED.name
         user.save()
