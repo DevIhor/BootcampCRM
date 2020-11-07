@@ -6,7 +6,7 @@ ALLOWED_HOSTS = ['*']
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / env('DATABASE_NAME'),
+        'NAME': PROJECT_DIR / env('DATABASE_NAME'),
     },
     # 'default': {
     #     'ENGINE': 'django.db.backends.postgresql',
