@@ -16,7 +16,7 @@ PROJECT_DIR = BASE_DIR.parent
 
 SECRET_KEY = env('SECRET_KEY')
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = env('DJANGO_ALLOWED_HOSTS').split(" ")
 
 LOCAL_APPS = [
     'apps.authentication.apps.AuthenticationConfig',

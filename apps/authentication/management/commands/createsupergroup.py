@@ -34,5 +34,5 @@ class Command(BaseCommand):
             self.stderr.write('\nOperation cancelled.')
             sys.exit(1)
         except NotRunningInTTYException:
-            self.stdout.write('Superuser creation skipped due to not running in a TTY. You can run '
-                              '`manage.py createsuperuser` in your project to create one manually.')
+            self.stdout.write('Supergroup creation skipped due to not running in a TTY. You can run '
+                              '`manage.py createsupergroup` in your project to create one manually.')

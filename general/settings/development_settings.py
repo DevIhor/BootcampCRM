@@ -1,20 +1,15 @@
 from general.settings.base_settings import *
 
-ALLOWED_HOSTS = ['*']
-
 # Database
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': PROJECT_DIR / env('DATABASE_NAME'),
+        'ENGINE': env('SQL_ENGINE', default='django.db.backends.sqlite3'),
+        'NAME': env('SQL_DATABASE', default='db.sqlite3'),
+        'USER': env('SQL_USER', default='user'),
+        'PASSWORD': env('SQL_PASSWORD', default='password'),
+        'HOST': env('SQL_HOST', default='localhost'),
+        'PORT': env('SQL_PORT', default='5432'),
     },
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.postgresql',
-    #     'NAME': 'postgres',
-    #     'USER': 'postgres',
-    #     'HOST': 'db',
-    #     'PORT': 5432,
-    # }
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.dummy.EmailBackend'
